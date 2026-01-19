@@ -2,41 +2,76 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =========================================
+   CUSTOM COMPONENTS (ANIMASI TEKS)
+   Lokasi di HTML: Hero Section -> <h2 class="flex gap-2...">
+   ========================================= */
 @layer components {
+  
+  /* Container utama untuk teks "I am" dan kata yang bergerak */
   .scroll-text {
     @apply flex items-center gap-3 text-4xl;
   }
 
+  /* Kotak pembungkus kata-kata berjalan (Wisnu, a Coder, dll).
+     Height dibatasi 1.2em dan overflow:hidden agar hanya 
+     satu baris kata yang terlihat dalam satu waktu. */
   .words {
     height: 1.2em;
     overflow: hidden;
-    color: #38bdf8;
+    color: #38bdf8; /* Warna biru muda (Sky-400) */
   }
 
+  /* Mengatur setiap baris kata (span) agar bergerak */
   .words span {
     display: block;
-    animation: slideText 10s infinite;
+    animation: slideText 10s infinite; /* Durasi 10 detik, berulang selamanya */
   }
 
+  /* Logika animasi: Menggeser teks ke atas (Y-axis) 
+     untuk mengganti kata yang tampil */
   @keyframes slideText {
-    0%   { transform: translateY(0%); }
-    20%  { transform: translateY(-100%); }
-    40%  { transform: translateY(-200%); }
-    60%  { transform: translateY(-300%); }
-    80%  { transform: translateY(-400%); }
-    100% { transform: translateY(0%); }
+    0%   { transform: translateY(0%); }    /* Tampil: Wisnu */
+    20%  { transform: translateY(-100%); } /* Tampil: a Coder */
+    40%  { transform: translateY(-200%); } /* Tampil: a Designer */
+    60%  { transform: translateY(-300%); } /* Tampil: a Developer */
+    80%  { transform: translateY(-400%); } /* Tampil: a Creator */
+    100% { transform: translateY(0%); }    /* Kembali ke awal */
   }
 }
 
+/* =========================================
+   BACKGROUND PARTICLES
+   Lokasi di HTML: <canvas id="particles">
+   ========================================= */
 #particles {
-  position: fixed;
+  position: fixed; /* Agar tetap diam saat discroll (jika diinginkan) atau menutupi area */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 0;
-  
+  z-index: 0; /* Pastikan di belakang konten (z-index konten harus > 0) */
+  pointer-events: none; /* Agar klik tembus ke elemen di bawahnya */
 }
 
+/* =========================================
+   UTILITIES CUSTOM (ANIMASI BUBBLE)
+   Lokasi di HTML: Bubble badges (Clean Code, Responsive, Fast Loading)
+   ========================================= */
+@layer utilities {
+  
+  /* Keyframes untuk efek melayang naik-turun halus */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px); /* Naik sedikit ke atas */
+    }
+  }
 
-
+  /* Class yang dipanggil di HTML: class="... animate-float" */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}
