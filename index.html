@@ -35,15 +35,30 @@
 
   <!-- ISI HERO -->
   <div class="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+<div class="flex justify-center md:justify-start">
+  <div class="relative w-72 h-72 md:w-80 md:h-80 group">
+    
+    <!-- AVATAR -->
+    <img
+      src="assets/img/jake.png"
+      alt="Avatar"
+      class="absolute inset-0 w-full h-full rounded-full object-cover
+             border-4 border-cyan-400 shadow-lg
+             transition-opacity duration-500 group-hover:opacity-0"
+    />
 
-    <!-- IMAGE -->
-    <div class="flex justify-center md:justify-start">
-      <img
-        src="assets/img/jake.png"
-        alt="Profile"
-        class="w-72 h-72 md:w-80 md:h-80 rounded-full object-cover border-4 border-cyan-400 shadow-lg"
-      />
-    </div>
+    <!-- FOTO ASLI -->
+    <img
+      src="assets/img/wisnu.jpg"
+      alt="Wisnu"
+      class="absolute inset-0 w-full h-full rounded-full object-cover
+             border-4 border-cyan-400 shadow-lg
+             opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+    />
+
+  </div>
+</div>
+
 
     <!-- TEXT -->
     <div class="text-center md:text-left text-white">
@@ -148,8 +163,4 @@
 
 <script src="js/main.js"></script>
 </body>
-
-</body>
-</html>
-
 </html>
