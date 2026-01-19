@@ -1,6 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("particles");
   const hero = document.getElementById("home");
+  
+  const menuBtn = document.getElementById("menuBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+
+menuBtn?.addEventListener("click", () => {
+  mobileMenu.classList.toggle("hidden");
+});
+
 
   if (!canvas || !hero) return;
 
@@ -80,3 +88,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("resize", resizeCanvas);
 });
+

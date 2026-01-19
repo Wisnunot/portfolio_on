@@ -10,17 +10,67 @@
 <body class="bg-slate-900 text-slate-100">
   
   <!-- NAVBAR -->
-  <header class="fixed top-0 w-full bg-slate-900/80 backdrop-blur z-50">
-    <nav class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="font-bold text-lg">wisnu</h1>
-      <ul class="flex gap-6 text-sm">
-        <li><a href="#about" class="hover:text-blue-400">About</a></li>
-        <li><a href="#skills" class="hover:text-blue-400">Skills</a></li>
-        <li><a href="#projects" class="hover:text-blue-400">Projects</a></li>
-        <li><a href="#contact" class="hover:text-blue-400">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+<header class="fixed top-0 w-full z-50">
+  <nav
+    class="max-w-6xl mx-auto px-6 py-4
+           flex justify-between items-center
+           bg-white/5 backdrop-blur-md
+           border border-white/10
+           rounded-full mt-4
+           shadow-lg">
+
+    <!-- LOGO -->
+    <a href="#home" class="font-bold text-lg tracking-wide text-white">
+      wisnu<span class="text-cyan-400">.</span>
+    </a>
+
+    <!-- DESKTOP MENU -->
+    <ul class="hidden md:flex items-center gap-8 text-sm text-slate-200">
+      <li><a href="#about" class="hover:text-cyan-400 transition">About</a></li>
+      <li><a href="#skills" class="hover:text-cyan-400 transition">Skills</a></li>
+      <li><a href="#projects" class="hover:text-cyan-400 transition">Projects</a></li>
+      <li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li>
+    </ul>
+
+    <!-- CTA -->
+    <a
+      href="#contact"
+      class="hidden md:inline-block
+             border border-cyan-400/50
+             text-cyan-400 text-sm
+             px-4 py-2 rounded-full
+             hover:bg-cyan-400 hover:text-slate-900
+             transition">
+      Hire Me
+    </a>
+
+    <!-- HAMBURGER -->
+    <button
+      id="menuBtn"
+      class="md:hidden text-white focus:outline-none">
+      ☰
+    </button>
+
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div
+    id="mobileMenu"
+    class="md:hidden mx-6 mt-4
+           bg-white/10 backdrop-blur-md
+           border border-white/20
+           rounded-2xl
+           shadow-lg
+           overflow-hidden
+           hidden">
+
+    <a href="#about" class="block px-6 py-4 text-white hover:bg-white/10">About</a>
+    <a href="#skills" class="block px-6 py-4 text-white hover:bg-white/10">Skills</a>
+    <a href="#projects" class="block px-6 py-4 text-white hover:bg-white/10">Projects</a>
+    <a href="#contact" class="block px-6 py-4 text-white hover:bg-white/10">Contact</a>
+  </div>
+</header>
+
 
   <!-- HERO -->
 <section
@@ -121,28 +171,40 @@
 
 
     <!-- TEXT -->
-    <div class="text-center md:text-left text-white">
-      <h2 class="flex gap-2 text-4xl font-semibold">
-        I am
-        <span class="words drop-shadow-[0_0_10px_#38bdf8]">
-          <span>Wisnu</span>
-          <span>a Coder</span>
-          <span>a Designer</span>
-          <span>a Developer</span>
-          <span>a Creator</span>
-        </span>
-      </h2>
+<!-- TEXT -->
+<div class="text-center md:text-left text-white">
 
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">
-        Welcome to My Portfolio 👋
-      </h1>
+  <!-- I AM + WORDS -->
+  <h2
+    class="flex justify-center md:justify-start
+           items-center gap-2
+           text-4xl font-semibold
+           flex-wrap">
+    <span>I am</span>
 
-      <p class="text-gray-300 max-w-xl">
-        "Hey there! I'm Wisnu, a creative developer dedicated to turning bold ideas into seamless digital realities..."
-      </p>
-    </div>
+    <span
+      class="words drop-shadow-[0_0_10px_#38bdf8]
+             text-center md:text-left">
+      <span>Wisnu</span>
+      <span>a Coder</span>
+      <span>a Designer</span>
+      <span>a Developer</span>
+      <span>a Creator</span>
+    </span>
+  </h2>
 
-  </div>
+  <!-- TITLE -->
+  <h1 class="text-4xl md:text-5xl font-bold mb-4 mt-4">
+    Welcome to My Portfolio 👋
+  </h1>
+
+  <!-- DESC -->
+  <p class="text-gray-300 max-w-xl mx-auto md:mx-0">
+    "Hey there! I'm Wisnu, a creative developer dedicated to turning bold ideas into seamless digital realities..."
+  </p>
+
+</div>
+
 </section>
 
 
