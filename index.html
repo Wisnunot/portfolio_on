@@ -17,6 +17,268 @@
   <div id="contact"></div>
   <div id="footer"></div>
 
-  <script src="js/main.js"></script>
+    <!-- DESKTOP MENU -->
+    <ul class="hidden md:flex items-center gap-8 text-sm text-slate-200">
+      <li><a href="#about" class="hover:text-cyan-400 transition">About</a></li>
+      <li><a href="#skills" class="hover:text-cyan-400 transition">Skills</a></li>
+      <li><a href="#projects" class="hover:text-cyan-400 transition">Projects</a></li>
+      <li><a href="#contact" class="hover:text-cyan-400 transition">Contact</a></li>
+    </ul>
+
+    <!-- CTA -->
+    <a
+      href="#contact"
+      class="hidden md:inline-block
+             border border-cyan-400/50
+             text-cyan-400 text-sm
+             px-4 py-2 rounded-full
+             hover:bg-cyan-400 hover:text-slate-900
+             transition">
+      Hire Me
+    </a>
+
+    <!-- HAMBURGER -->
+    <button
+      id="menuBtn"
+      class="md:hidden text-white focus:outline-none">
+      ☰
+    </button>
+
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div
+    id="mobileMenu"
+    class="md:hidden mx-6 mt-4
+           bg-white/10 backdrop-blur-md
+           border border-white/20
+           rounded-2xl
+           shadow-lg
+           overflow-hidden
+           hidden">
+
+    <a href="#about" class="block px-6 py-4 text-white hover:bg-white/10">About</a>
+    <a href="#skills" class="block px-6 py-4 text-white hover:bg-white/10">Skills</a>
+    <a href="#projects" class="block px-6 py-4 text-white hover:bg-white/10">Projects</a>
+    <a href="#contact" class="block px-6 py-4 text-white hover:bg-white/10">Contact</a>
+  </div>
+</header>
+
+
+  <!-- HERO -->
+<section
+  id="home"
+  class="relative min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center overflow-hidden">
+
+  <!-- PARTIKEL -->
+  <canvas
+    id="particles"
+    class="absolute inset-0 w-full h-full z-0"
+  ></canvas>
+
+  <!-- ISI HERO -->
+  <div class="relative z-10 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+<!-- IMAGE WRAPPER -->
+<div class="flex justify-center md:justify-start">
+  <div class="relative group w-72 h-72 md:w-80 md:h-80">
+
+    <!-- AVATAR (DEFAULT) -->
+    <img
+      src="assets/img/jake.webp"
+      alt="Avatar"
+      class="absolute inset-0 w-full h-full object-cover rounded-full
+             shadow-lg
+             transition-all duration-500
+             group-hover:opacity-0"
+    />
+
+    <!-- FOTO ASLI (HOVER) -->
+    <img
+      src="assets/img/wisnu.jpg"
+      alt="Wisnu"
+      class="absolute inset-0 w-full h-full object-cover rounded-full
+            shadow-lg
+            opacity-0
+            transition-all duration-500 ease-out
+            group-hover:opacity-100 group-hover:scale-105"
+    />
+
+   <!-- BUBBLE CLEAN CODE -->
+<div
+  class="absolute top-6 -right-10
+         flex items-center gap-2
+         bg-white/10 backdrop-blur-md
+         border border-white/20
+         text-white text-xs
+         px-4 py-2 rounded-full shadow-lg
+         animate-float
+
+         opacity-0 translate-x-6
+         transition-all duration-500
+
+         group-hover:opacity-100 group-hover:translate-x-0
+         group-active:opacity-100 group-active:translate-x-0">
+  <span>💻</span>
+  <span>Clean Code</span>
+</div>
+
+
+
+    <!-- BUBBLE RESPONSIVE -->
+    <div
+      class="absolute bottom-12 -right-12
+         flex items-center gap-2
+         bg-white/10 backdrop-blur-md
+         border border-white/20
+         text-white text-xs
+         px-4 py-2 rounded-full shadow-lg
+         animate-float
+
+         opacity-0 translate-x-6
+         transition-all duration-500
+
+         group-hover:opacity-100 group-hover:translate-x-0
+         group-active:opacity-100 group-active:translate-x-0">
+      <span>📱</span>
+      <span>Responsive</span>
+    </div>
+
+    <!-- BUBBLE FAST -->
+    <div
+      class="absolute -bottom-6 left-1/2 -translate-x-1/2 translate-y-4
+         flex items-center gap-2
+         bg-white/10 backdrop-blur-md
+         border border-white/20
+         text-white text-xs
+         px-4 py-2 rounded-full shadow-lg
+         animate-float
+
+         opacity-0 translate-x-6
+         transition-all duration-500
+
+         group-hover:opacity-100 group-hover:translate-x-0
+         group-active:opacity-100 group-active:translate-x-0">
+      <span>⚡</span>
+      <span>Fast Loading</span>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- TEXT -->
+<div class="text-center md:text-left text-white">
+
+  <!-- I AM + WORDS -->
+  <h2
+    class="flex justify-center md:justify-start
+           items-center gap-2
+           text-4xl font-semibold
+           flex-wrap">
+    <span>I am</span>
+
+    <span
+      class="words drop-shadow-[0_0_10px_#38bdf8]
+             text-center md:text-left">
+      <span>Wisnu</span>
+      <span>a Coder</span>
+      <span>a Designer</span>
+      <span>a Developer</span>
+      <span>a Creator</span>
+    </span>
+  </h2>
+
+  <!-- TITLE -->
+  <h1 class="text-4xl md:text-5xl font-bold mb-4 mt-4">
+    Welcome to My Portfolio 👋
+  </h1>
+
+  <!-- DESC -->
+  <p class="text-gray-300 max-w-xl mx-auto md:mx-0">
+    "Hey there! I'm Wisnu, a creative developer dedicated to turning bold ideas into seamless digital realities..."
+  </p>
+
+</div>
+
+</section>
+
+
+
+  <!-- ABOUT -->
+  <section id="about" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-bold mb-6">About Me</h3>
+      <p class="text-slate-400 max-w-2xl">
+        Saya adalah mahasiswa yang sedang belajar web development menggunakan
+        HTML, Tailwind CSS, dan JavaScript. Saya suka desain yang simpel dan rapi.
+      </p>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="py-24 bg-slate-800">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-bold mb-10">Skills</h3>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="p-6 bg-slate-900 rounded-lg text-center">HTML</div>
+        <div class="p-6 bg-slate-900 rounded-lg text-center">CSS</div>
+        <div class="p-6 bg-slate-900 rounded-lg text-center">Tailwind</div>
+        <div class="p-6 bg-slate-900 rounded-lg text-center">JavaScript</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="py-24">
+    <div class="max-w-6xl mx-auto px-6">
+      <h3 class="text-3xl font-bold mb-10">Projects</h3>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-slate-800 rounded-lg p-6">
+          <h4 class="font-semibold mb-2">Project One</h4>
+          <p class="text-slate-400 text-sm">
+            Deskripsi singkat project.
+          </p>
+        </div>
+
+        <div class="bg-slate-800 rounded-lg p-6">
+          <h4 class="font-semibold mb-2">Project Two</h4>
+          <p class="text-slate-400 text-sm">
+            Deskripsi singkat project.
+          </p>
+        </div>
+
+        <div class="bg-slate-800 rounded-lg p-6">
+          <h4 class="font-semibold mb-2">Project Three</h4>
+          <p class="text-slate-400 text-sm">
+            Deskripsi singkat project.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="py-24 bg-slate-800">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold mb-4">Contact</h3>
+      <p class="text-slate-400 mb-6">
+        Feel free to reach me anytime.
+      </p>
+      <a href="mailto:emailkamu@email.com"
+        class="inline-block border border-blue-400 px-6 py-3 rounded-lg hover:bg-blue-400 hover:text-slate-900 transition">
+        Say Hello
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-6 text-center text-slate-500 text-sm">
+    © 2026 Wisnu. All rights reserved.
+  </footer>
+
+<script src="js/main.js"></script>
 </body>
 </html>
