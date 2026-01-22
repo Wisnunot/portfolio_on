@@ -1,12 +1,19 @@
 // ===============================
-// LOAD PARTIALS
+// LOAD PARTIALS (HTML COMPONENTS)
 // ===============================
+
+/**
+ * Load satu file HTML ke element tertentu
+ */
 async function loadComponent(id, file) {
   const res = await fetch(file);
   const html = await res.text();
   document.getElementById(id).innerHTML = html;
 }
 
+/**
+ * Load semua section lalu jalankan inisialisasi
+ */
 async function loadAll() {
   await loadComponent("navbar", "./partials/navbar.html");
   await loadComponent("hero", "./partials/hero.html");
@@ -18,9 +25,15 @@ async function loadAll() {
 
   initNavbar();
   initParticles();
+  initAvatarParallax();
 }
 
+// Jalankan setelah DOM siap
 document.addEventListener("DOMContentLoaded", loadAll);
+
+// ===============================
+// NAVBAR MOBILE TOGGLE
+// ===============================
 
 function initNavbar() {
   const menuBtn = document.getElementById("menuBtn");
@@ -28,10 +41,15 @@ function initNavbar() {
 
   if (!menuBtn || !mobileMenu) return;
 
+  // Toggle menu mobile
   menuBtn.addEventListener("click", () => {
     mobileMenu.classList.toggle("hidden");
   });
 }
+
+// ===============================
+// PARTICLES HERO + MOUSE EFFECT
+// ===============================
 
 function initParticles() {
   const canvas = document.getElementById("particles");
@@ -40,10 +58,68 @@ function initParticles() {
   if (!canvas || !hero) return;
 
   const ctx = canvas.getContext("2d");
+
+  // State particles
   let particles = [];
+
+  // Opacity untuk fade in/out saat scroll
   let opacity = 0;
   let targetOpacity = 0;
   const fadeSpeed = 0.03;
+  // ===============================
+// AVATAR PARALLAX EFFECT
+// ===============================
+
+function initAvatarParallax() {
+  const hero = document.getElementById("home");
+  const avatar = document.querySelector(".avatar-parallax");
+
+  if (!hero || !avatar) return;
+
+  // Disable di mobile
+  if (window.innerWidth < 768) return;
+
+  let mouseX = 0;
+  let mouseY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  const strength = 20; // semakin besar = makin jauh geraknya
+  const ease = 0.08;   // smooth easing
+
+  // Ambil posisi mouse relatif ke hero
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+
+    mouseX = (e.clientX - rect.left - rect.width / 2) / rect.width;
+    mouseY = (e.clientY - rect.top - rect.height / 2) / rect.height;
+  });
+
+  // Reset saat mouse keluar
+  hero.addEventListener("mouseleave", () => {
+    mouseX = 0;
+    mouseY = 0;
+  });
+
+  function animate() {
+    // easing movement
+    currentX += (mouseX - currentX) * ease;
+    currentY += (mouseY - currentY) * ease;
+
+    avatar.style.transform = `
+      translate(${currentX * strength}px, ${currentY * strength}px)
+    `;
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+}
+
+
+  // ===============================
+  // CANVAS RESPONSIVE
+  // ===============================
 
   function resizeCanvas() {
     canvas.width = hero.offsetWidth;
@@ -51,24 +127,72 @@ function initParticles() {
   }
   resizeCanvas();
 
+  // ===============================
+  // MOUSE TRACKING
+  // ===============================
+
+  const mouse = {
+    x: null,
+    y: null,
+    radius: 180 // jarak pengaruh mouse ke partikel
+  };
+
+  // Ambil posisi mouse relatif ke hero
+  hero.addEventListener("mousemove", (e) => {
+    const rect = hero.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  // Reset mouse saat keluar area hero
+  hero.addEventListener("mouseleave", () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  // ===============================
+  // PARTICLE CLASS
+  // ===============================
+
   class Particle {
     constructor() {
       this.reset();
     }
 
+    // Reset posisi & properti partikel
     reset() {
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
-      this.size = Math.random() * 2 + 0.5;
+      this.size = Math.random() * 3 + 0.5;
       this.speedY = Math.random() * 0.6 + 0.2;
       this.alpha = Math.random();
+      this.density = Math.random() * 20 + 5;
     }
 
+    // Update posisi partikel
     update() {
+      // Gerakan ke atas
       this.y -= this.speedY;
+
+      // Interaksi dengan mouse
+      if (mouse.x !== null && mouse.y !== null) {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius) {
+          const force = (mouse.radius - distance) / mouse.radius;
+          const power = 0.15;
+          this.x -= (dx / distance) * force * this.density * 0.03;
+          this.y -= (dy / distance) * force * this.density * 0.03;
+        }
+      }
+
+      // Reset jika keluar layar atas
       if (this.y < 0) this.reset();
     }
 
+    // Gambar partikel ke canvas
     draw() {
       ctx.fillStyle = `rgba(56,189,248,${this.alpha * opacity})`;
       ctx.beginPath();
@@ -76,6 +200,10 @@ function initParticles() {
       ctx.fill();
     }
   }
+
+  // ===============================
+  // INIT & ANIMATION LOOP
+  // ===============================
 
   function init() {
     particles = [];
@@ -86,9 +214,11 @@ function initParticles() {
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Smooth fade in/out
     opacity += (targetOpacity - opacity) * fadeSpeed;
 
-    particles.forEach(p => {
+    particles.forEach((p) => {
       p.update();
       p.draw();
     });
@@ -99,6 +229,10 @@ function initParticles() {
   init();
   animate();
 
+  // ===============================
+  // INTERSECTION OBSERVER
+  // ===============================
+
   const observer = new IntersectionObserver(
     ([entry]) => {
       targetOpacity = entry.isIntersecting ? 1 : 0;
@@ -107,5 +241,7 @@ function initParticles() {
   );
 
   observer.observe(hero);
+
+  // Resize canvas saat window resize
   window.addEventListener("resize", resizeCanvas);
 }
