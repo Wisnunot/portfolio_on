@@ -66,6 +66,18 @@ function initParticles() {
   let opacity = 0;
   let targetOpacity = 0;
   const fadeSpeed = 0.03;
+  
+  hero.addEventListener("click", (e) => {
+  for (let i = 0; i < 25; i++) {
+    const p = new Particle();
+    p.x = e.offsetX;
+    p.y = e.offsetY;
+    p.size = Math.random() * 4 + 1;
+    p.speedY = Math.random() * 2 + 1;
+    particles.push(p);
+  }
+});
+
   // ===============================
 // AVATAR PARALLAX EFFECT
 // ===============================
@@ -167,30 +179,45 @@ function initAvatarParallax() {
       this.speedY = Math.random() * 0.6 + 0.2;
       this.alpha = Math.random();
       this.density = Math.random() * 20 + 5;
+
+         // TAMBAHAN
+    this.vx = 0;
+    this.vy = 0;
     }
 
     // Update posisi partikel
-    update() {
-      // Gerakan ke atas
-      this.y -= this.speedY;
+   update() {
+  // Gerakan dasar naik
+  this.vy -= this.speedY * 0.06;
 
-      // Interaksi dengan mouse
-      if (mouse.x !== null && mouse.y !== null) {
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+  if (mouse.x !== null && mouse.y !== null) {
+    const dx = mouse.x - this.x;
+    const dy = mouse.y - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < mouse.radius) {
-          const force = (mouse.radius - distance) / mouse.radius;
-          const power = 0.15;
-          this.x -= (dx / distance) * force * this.density * 0.03;
-          this.y -= (dy / distance) * force * this.density * 0.03;
-        }
-      }
+    if (distance < mouse.radius) {
+      // Gaya tarik ke mouse (EFEK SLITHER)
+      const force = (mouse.radius - distance) / mouse.radius;
+      const angle = Math.atan2(dy, dx);
 
-      // Reset jika keluar layar atas
-      if (this.y < 0) this.reset();
+      this.vx += Math.cos(angle) * force * 0.6;
+      this.vy += Math.sin(angle) * force * 0.6;
     }
+  }
+
+  // Gesekan biar gak liar
+  this.vx *= 0.94;
+  this.vy *= 0.94;
+
+  this.x += this.vx;
+  this.y += this.vy;
+
+  // Reset kalau keluar layar
+  if (this.y < 0 || this.x < 0 || this.x > canvas.width) {
+    this.reset();
+    this.y = canvas.height;
+  }
+}
 
     // Gambar partikel ke canvas
     draw() {
