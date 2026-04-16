@@ -6,7 +6,11 @@ module.exports = {
     "./js/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        avatar: ['Avatar', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
