@@ -1211,6 +1211,19 @@ video {
   animation: float 3s ease-in-out infinite;
 }
 
+/* Efek Fade Out Smooth pada bagian bawah gambar */
+
+.mask-bottom-fade {
+  -webkit-mask-image: linear-gradient(to bottom, 
+      black 60%, 
+      transparent 100%
+    );
+  mask-image: linear-gradient(to bottom, 
+      black 60%, 
+      transparent 100%
+    );
+}
+
 /* =========================================
    CUSTOM COMPONENTS (ANIMASI TEKS)
    Lokasi di HTML: Hero Section -> <h2 class="flex gap-2...">
@@ -1230,8 +1243,8 @@ video {
   height: 100%;
   z-index: 0;
   /* Pastikan di belakang konten (z-index konten harus > 0) */
-  pointer-events: none;
-  /* Agar klik tembus ke elemen di bawahnya */
+  pointer-events: auto;
+  /* Agar bisa menerima event mouse langsung */
 }
 
 /* =========================================

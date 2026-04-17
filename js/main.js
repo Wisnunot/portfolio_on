@@ -69,10 +69,14 @@ function initParticles() {
   const fadeSpeed = 0.03;
 
   hero.addEventListener("click", (e) => {
+    // Gunakan clientX/Y untuk fixed positioning (viewport-relative)
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+
     for (let i = 0; i < 25; i++) {
       const p = new Particle();
-      p.x = e.offsetX;
-      p.y = e.offsetY;
+      p.x = clickX;
+      p.y = clickY;
       p.size = Math.random() * 4 + 1;
       p.speedY = Math.random() * 2 + 1;
       particles.push(p);
@@ -84,9 +88,9 @@ function initParticles() {
   // ===============================
 
   function resizeCanvas() {
-    canvas.width = hero.offsetWidth;
-    // Gunakan scrollHeight agar canvas menutupi SELURUH hero (intro + home)
-    canvas.height = hero.scrollHeight;
+    // Sesuai request: Gunakan innerWidth/innerHeight untuk full viewport interaction
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
   }
   resizeCanvas();
 
@@ -106,9 +110,9 @@ function initParticles() {
     const isOverHero = e.clientX >= rect.left && e.clientX <= rect.right &&
                        e.clientY >= rect.top  && e.clientY <= rect.bottom;
     if (isOverHero) {
-      mouse.x = e.clientX - rect.left;
-      // pageY - hero.offsetTop agar koordinat Y relatif ke canvas penuh
-      mouse.y = e.pageY - hero.offsetTop;
+      // Gunakan clientX/Y langsung (viewport relative) untuk sync dengan canvas fixed
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
     } else {
       mouse.x = null;
       mouse.y = null;
