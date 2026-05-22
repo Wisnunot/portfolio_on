@@ -27,7 +27,7 @@ async function loadAll() {
   initParticles();
   initAvatarParallax();
   initIntroScroll();
-  initNavActiveSpread();
+  initNavbarAnimation();
 }
 
 // Jalankan setelah DOM siap
@@ -46,6 +46,14 @@ function initNavbar() {
   // Toggle menu mobile
   menuBtn.addEventListener("click", () => {
     mobileMenu.classList.toggle("hidden");
+  });
+
+  // Close mobile menu ketika link diklik
+  const mobileLinks = mobileMenu.querySelectorAll("a");
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileMenu.classList.add("hidden");
+    });
   });
 }
 
@@ -284,116 +292,7 @@ function initAvatarParallax() {
   animate();
 }
 
-// ===============================
-// NAVBAR ACTIVE + LETTER SPREAD
-// ===============================
 
-function initNavActiveSpread() {
-  const navLinks = document.querySelectorAll(".nav-link");
-
-  // --- 1. Wrap each link's text in letter <span>s ---
-  navLinks.forEach((link) => {
-    const word = link.textContent.trim();
-    link.innerHTML = `<span class="nav-letters">${
-      word.split("").map((c) => `<span class="nav-letter">${c}</span>`).join("")
-    }</span>`;
-  });
-
-  // --- 2. Sections to watch (in DOM order) ---
-  const sectionIds = ["home", "about", "skills", "projects", "contact"];
-
-  // Map section id → nav link (contact covers footer too)
-  function getLinkForSection(id) {
-    if (id === "home") return null; // no nav item for home, all inactive
-    return document.querySelector(`.nav-link[data-section="${id}"]`);
-  }
-
-  // --- 3. Track which section is most visible ---
-  let currentActive = null;
-  let spreadInterval = null;
-
-  function setActive(link) {
-    if (link === currentActive) return;
-
-    // Clear old active
-    if (currentActive) {
-      currentActive.classList.remove("nav-active", "nav-spread");
-      clearInterval(spreadInterval);
-    }
-
-    currentActive = link;
-
-    if (!link) return;
-
-    link.classList.add("nav-active");
-
-    // Start spread loop immediately
-    runSpread(link);
-    spreadInterval = setInterval(() => runSpread(link), 2000);
-  }
-
-  function runSpread(link) {
-    if (!link) return;
-
-    // Phase 1: spread (0ms)
-    link.classList.add("nav-spread");
-
-    // Phase 2: snap back (700ms)
-    setTimeout(() => {
-      link.classList.remove("nav-spread");
-    }, 700);
-  }
-
-  // --- 4. IntersectionObserver — pick most-visible section ---
-  const visibilityMap = {};
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        visibilityMap[entry.target.id] = entry.intersectionRatio;
-      });
-
-      // Find section with highest visibility
-      let topId = null;
-      let topRatio = 0;
-      sectionIds.forEach((id) => {
-        const ratio = visibilityMap[id] || 0;
-        if (ratio > topRatio) {
-          topRatio = ratio;
-          topId = id;
-        }
-      });
-
-      setActive(getLinkForSection(topId));
-    },
-    {
-      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
-    }
-  );
-
-  sectionIds.forEach((id) => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
-
-  // --- 5. Hover stagger on non-active links ---
-  navLinks.forEach((link) => {
-    link.addEventListener("mouseenter", () => {
-      if (link.classList.contains("nav-active")) return;
-      link.querySelectorAll(".nav-letter").forEach((l, i) => {
-        setTimeout(() => {
-          l.style.transform = "translateY(-2px)";
-        }, i * 30);
-      });
-    });
-    link.addEventListener("mouseleave", () => {
-      if (link.classList.contains("nav-active")) return;
-      link.querySelectorAll(".nav-letter").forEach((l) => {
-        l.style.transform = "translateY(0px)";
-      });
-    });
-  });
-}
 
 function initIntroScroll() {
   const intro = document.getElementById("intro");
@@ -431,4 +330,82 @@ function initIntroScroll() {
       introText.style.letterSpacing = `0px`;
     }
   });
+}
+
+// ===============================
+// NAVBAR ANIMATION (STAGGERED & SCROLL SPY)
+// ===============================
+
+function initNavbarAnimation() {
+  const navLinks = document.querySelectorAll(".nav-link");
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+
+  // 1. Dinamis memecah teks setiap link menjadi huruf-huruf dalam <span>
+  navLinks.forEach((link) => {
+    const text = link.textContent.trim();
+    link.innerHTML = ""; // Bersihkan teks asli
+
+    [...text].forEach((char, index) => {
+      const span = document.createElement("span");
+      span.textContent = char === " " ? "\u00A0" : char; // Handle spasi dengan non-breaking space
+      span.className = "char";
+      span.style.setProperty("--index", index);
+      link.appendChild(span);
+    });
+  });
+
+  // 2. Logika Scroll Spy untuk mendeteksi seksi yang aktif
+  const sections = [
+    { id: "home", el: document.getElementById("intro") }, // Intro/Hero teratas
+    { id: "about", el: document.getElementById("about") },
+    { id: "skills", el: document.getElementById("skills") },
+    { id: "projects", el: document.getElementById("projects") },
+    { id: "contact", el: document.getElementById("contact") }
+  ];
+
+  function updateActiveLink() {
+    let currentActive = "home";
+    const scrollPosition = window.scrollY + window.innerHeight / 3;
+
+    // Deteksi jika pengguna berada di bagian paling atas
+    if (window.scrollY < 120) {
+      currentActive = "home";
+    } else {
+      sections.forEach((sec) => {
+        if (!sec.el) return;
+        const top = sec.el.offsetTop;
+        const height = sec.el.offsetHeight;
+
+        if (scrollPosition >= top && scrollPosition < top + height) {
+          currentActive = sec.id;
+        }
+      });
+    }
+
+    // Set kelas active untuk Desktop Links
+    navLinks.forEach((link) => {
+      const sectionName = link.getAttribute("data-section");
+      if (sectionName === currentActive) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+
+    // Set kelas active untuk Mobile Links
+    mobileNavLinks.forEach((link) => {
+      const sectionName = link.getAttribute("data-section");
+      if (sectionName === currentActive) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  // Pasang listener scroll
+  window.addEventListener("scroll", updateActiveLink);
+  
+  // Panggil sekali saat inisialisasi agar menu yang aktif langsung bernyawa
+  updateActiveLink();
 }

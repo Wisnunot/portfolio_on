@@ -1,4 +1,7 @@
 @import url('https://fonts.cdnfonts.com/css/avatar');
+html {
+  scroll-behavior: smooth;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -38,6 +41,56 @@
     60%  { transform: translateY(-300%); } /* Tampil: a Developer */
     80%  { transform: translateY(-400%); } /* Tampil: a Creator */
     100% { transform: translateY(0%); }    /* Kembali ke awal */
+  }
+
+  /* =========================================
+     NAVBAR ACTIVE & HOVER ANIMATION (STAGGERED)
+     ========================================= */
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link .char {
+    display: inline-block;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.4s ease, margin 0.4s ease;
+    transition-delay: calc(var(--index) * 0.03s);
+  }
+
+  /* Staggered Hover Effect for non-active links */
+  .nav-link:not(.active):hover .char {
+    transform: translateY(-3px) scale(1.1);
+    color: #22d3ee; /* cyan-400 */
+  }
+
+  /* Active Class Styling with Loop Animation */
+  .nav-link.active .char {
+    color: #22d3ee; /* cyan-400 */
+    animation: active-loop 2s infinite ease-in-out;
+    animation-delay: calc(var(--index) * 0.08s);
+  }
+
+  /* Active Loop Keyframes: compact -> h o m e -> home */
+  @keyframes active-loop {
+    0%, 100% {
+      margin: 0 -0.06em; /* compact: squished together */
+      transform: scale(0.95);
+      text-shadow: none;
+    }
+    35% {
+      margin: 0 0.18em; /* h o m e (spread) */
+      transform: scale(1.15) translateY(-2px);
+      text-shadow: 0 0 8px rgba(34, 211, 238, 0.6);
+    }
+    70% {
+      margin: 0 0.02em; /* home (normal) */
+      transform: scale(1) translateY(0);
+      text-shadow: none;
+    }
   }
 }
 
@@ -86,5 +139,16 @@
       black 60%, 
       transparent 100%
     );
+  }
+
+  /* Styling active link mobile menu */
+  .mobile-nav-link.active {
+    color: #22d3ee !important;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid #22d3ee;
+    padding-left: 1.25rem !important; /* memberi kesan indent saat aktif */
+  }
+  .mobile-nav-link {
+    transition: all 0.3s ease;
   }
 }
