@@ -622,6 +622,10 @@ video {
   pointer-events: none;
 }
 
+.visible{
+  visibility: visible;
+}
+
 .fixed{
   position: fixed;
 }
@@ -1225,6 +1229,61 @@ video {
 }
 
 /* =========================================
+   NAVBAR — LETTER SPREAD ANIMATION
+   ========================================= */
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-link .nav-letters {
+  display: inline-flex;
+  gap: 0px;
+  transition: gap 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-link .nav-letter {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.4s ease,
+              color 0.3s ease;
+}
+
+/* Hover — non-active links */
+
+.nav-link:not(.nav-active):hover {
+  color: #38bdf8;
+}
+
+.nav-link:not(.nav-active):hover .nav-letter {
+  color: #38bdf8;
+}
+
+/* Active state */
+
+.nav-link.nav-active {
+  color: #38bdf8;
+}
+
+.nav-link.nav-active .nav-letter {
+  color: #38bdf8;
+}
+
+/* Spread state (applied via JS) */
+
+.nav-link.nav-spread .nav-letters {
+  gap: 5px;
+}
+
+.nav-link.nav-spread .nav-letter {
+  opacity: 0.6;
+}
+
+/* =========================================
    CUSTOM COMPONENTS (ANIMASI TEKS)
    Lokasi di HTML: Hero Section -> <h2 class="flex gap-2...">
    ========================================= */
@@ -1264,11 +1323,6 @@ video {
 
 .hover\:bg-white\/10:hover{
   background-color: rgb(255 255 255 / 0.1);
-}
-
-.hover\:text-cyan-400:hover{
-  --tw-text-opacity: 1;
-  color: rgb(34 211 238 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-slate-900:hover{

@@ -27,6 +27,7 @@ async function loadAll() {
   initParticles();
   initAvatarParallax();
   initIntroScroll();
+  initNavActiveSpread();
 }
 
 // Jalankan setelah DOM siap
@@ -284,8 +285,115 @@ function initAvatarParallax() {
 }
 
 // ===============================
-// INTRO SCROLL ANIMATION
+// NAVBAR ACTIVE + LETTER SPREAD
 // ===============================
+
+function initNavActiveSpread() {
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  // --- 1. Wrap each link's text in letter <span>s ---
+  navLinks.forEach((link) => {
+    const word = link.textContent.trim();
+    link.innerHTML = `<span class="nav-letters">${
+      word.split("").map((c) => `<span class="nav-letter">${c}</span>`).join("")
+    }</span>`;
+  });
+
+  // --- 2. Sections to watch (in DOM order) ---
+  const sectionIds = ["home", "about", "skills", "projects", "contact"];
+
+  // Map section id → nav link (contact covers footer too)
+  function getLinkForSection(id) {
+    if (id === "home") return null; // no nav item for home, all inactive
+    return document.querySelector(`.nav-link[data-section="${id}"]`);
+  }
+
+  // --- 3. Track which section is most visible ---
+  let currentActive = null;
+  let spreadInterval = null;
+
+  function setActive(link) {
+    if (link === currentActive) return;
+
+    // Clear old active
+    if (currentActive) {
+      currentActive.classList.remove("nav-active", "nav-spread");
+      clearInterval(spreadInterval);
+    }
+
+    currentActive = link;
+
+    if (!link) return;
+
+    link.classList.add("nav-active");
+
+    // Start spread loop immediately
+    runSpread(link);
+    spreadInterval = setInterval(() => runSpread(link), 2000);
+  }
+
+  function runSpread(link) {
+    if (!link) return;
+
+    // Phase 1: spread (0ms)
+    link.classList.add("nav-spread");
+
+    // Phase 2: snap back (700ms)
+    setTimeout(() => {
+      link.classList.remove("nav-spread");
+    }, 700);
+  }
+
+  // --- 4. IntersectionObserver — pick most-visible section ---
+  const visibilityMap = {};
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        visibilityMap[entry.target.id] = entry.intersectionRatio;
+      });
+
+      // Find section with highest visibility
+      let topId = null;
+      let topRatio = 0;
+      sectionIds.forEach((id) => {
+        const ratio = visibilityMap[id] || 0;
+        if (ratio > topRatio) {
+          topRatio = ratio;
+          topId = id;
+        }
+      });
+
+      setActive(getLinkForSection(topId));
+    },
+    {
+      threshold: [0, 0.1, 0.25, 0.5, 0.75, 1.0],
+    }
+  );
+
+  sectionIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+
+  // --- 5. Hover stagger on non-active links ---
+  navLinks.forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      if (link.classList.contains("nav-active")) return;
+      link.querySelectorAll(".nav-letter").forEach((l, i) => {
+        setTimeout(() => {
+          l.style.transform = "translateY(-2px)";
+        }, i * 30);
+      });
+    });
+    link.addEventListener("mouseleave", () => {
+      if (link.classList.contains("nav-active")) return;
+      link.querySelectorAll(".nav-letter").forEach((l) => {
+        l.style.transform = "translateY(0px)";
+      });
+    });
+  });
+}
 
 function initIntroScroll() {
   const intro = document.getElementById("intro");
